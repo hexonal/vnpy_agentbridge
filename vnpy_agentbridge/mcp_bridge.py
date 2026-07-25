@@ -111,7 +111,9 @@ def build_mcp_bridge(main_engine: MainEngine, intent_engine: IntentEngine) -> Fa
             {
                 "vt_orderid": o.vt_orderid,
                 "vt_symbol": o.vt_symbol,
-                "direction": o.direction.value,
+                # OrderData.direction is Optional upstream, so an order built
+                # without one would crash this read-only listing on .value.
+                "direction": o.direction.value if o.direction is not None else "",
                 "status": o.status.value,
                 "volume": o.volume,
                 "traded": o.traded,
