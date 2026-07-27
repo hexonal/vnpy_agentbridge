@@ -1,7 +1,7 @@
+from .engine import APP_NAME, IntentEngine
 from .object import IntentStatus, OrderIntent
 from .order_request_ext import StopOrderRequest
 from .template import IntentRuleTemplate
-from .engine import APP_NAME, IntentEngine
 
 __all__ = [
     "IntentStatus",

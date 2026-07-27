@@ -7,13 +7,12 @@ FakeGateway from conftest.py (no network access, no credentials).
 from __future__ import annotations
 
 import pytest
-
 from vnpy.trader.constant import Direction, Exchange, Offset, OrderType
 
+from tests.conftest import FakeGateway
 from vnpy_agentbridge.engine import IntentEngine
 from vnpy_agentbridge.object import IntentStatus
 from vnpy_agentbridge.rules.confidence_rule import ConfidenceRule
-from tests.conftest import FakeGateway
 
 
 def _submit(intent_engine: IntentEngine, **overrides) -> str:
@@ -42,7 +41,9 @@ def test_create_intent_defaults_to_pending_review(intent_engine: IntentEngine) -
     assert intent.vt_symbol == "700.SEHK"
 
 
-def test_create_intent_never_calls_send_order(intent_engine: IntentEngine, fake_gateway: FakeGateway) -> None:
+def test_create_intent_never_calls_send_order(
+    intent_engine: IntentEngine, fake_gateway: FakeGateway
+) -> None:
     _submit(intent_engine)
     assert fake_gateway.sent_requests == []
 

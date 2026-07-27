@@ -11,7 +11,6 @@ from __future__ import annotations
 from collections.abc import Iterator
 
 import pytest
-
 from vnpy.event import EventEngine
 from vnpy.trader.constant import Exchange
 from vnpy.trader.engine import MainEngine

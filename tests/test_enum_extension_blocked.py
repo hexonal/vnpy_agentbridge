@@ -15,7 +15,6 @@ revisiting.
 from __future__ import annotations
 
 import pytest
-
 from vnpy.trader.constant import OrderType
 
 

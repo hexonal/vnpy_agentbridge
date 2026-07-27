@@ -16,10 +16,10 @@ import json
 
 from vnpy.trader.constant import Direction, Exchange, Offset, OrderType
 
+from tests.conftest import FakeGateway
 from vnpy_agentbridge.engine import IntentEngine
 from vnpy_agentbridge.mcp_bridge import build_mcp_bridge
 from vnpy_agentbridge.object import IntentStatus
-from tests.conftest import FakeGateway
 
 EXPECTED_TOOL_NAMES = {
     "screen_get_contract_pool",
@@ -36,7 +36,7 @@ def test_expected_tools_are_registered(main_engine, intent_engine: IntentEngine)
     mcp = build_mcp_bridge(main_engine, intent_engine)
     tools = asyncio.run(mcp.list_tools())
     names = {t.name for t in tools}
-    assert EXPECTED_TOOL_NAMES <= names
+    assert names >= EXPECTED_TOOL_NAMES
 
 
 def test_order_submit_intent_tool_reaches_intent_engine_not_send_order(
@@ -91,13 +91,17 @@ def test_order_query_intent_status_round_trip(main_engine, intent_engine: Intent
         confidence=0.9,
     )
 
-    result = asyncio.run(mcp.call_tool("order_query_intent_status", {"intent_id": intent.intent_id}))
+    result = asyncio.run(
+        mcp.call_tool("order_query_intent_status", {"intent_id": intent.intent_id})
+    )
     payload = json.loads(result.content[0].text)
     assert payload["intent_id"] == intent.intent_id
     assert payload["status"] == IntentStatus.PENDING_REVIEW.value
 
 
-def test_risk_get_positions_tool_is_read_only_and_reachable(main_engine, intent_engine: IntentEngine) -> None:
+def test_risk_get_positions_tool_is_read_only_and_reachable(
+    main_engine, intent_engine: IntentEngine
+) -> None:
     mcp = build_mcp_bridge(main_engine, intent_engine)
     result = asyncio.run(mcp.call_tool("risk_get_positions", {}))
     payload = json.loads(result.content[0].text)

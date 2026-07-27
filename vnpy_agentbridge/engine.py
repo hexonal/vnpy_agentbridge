@@ -132,7 +132,9 @@ class IntentEngine(BaseEngine):
         if intent is None:
             raise KeyError(f"unknown intent_id: {intent_id}")
         if intent.status != IntentStatus.PENDING_REVIEW:
-            raise ValueError(f"intent {intent_id} is not pending review (status={intent.status.value})")
+            raise ValueError(
+                f"intent {intent_id} is not pending review (status={intent.status.value})"
+            )
         return intent
 
     def approve_intent(self, intent_id: str, approver: str = "") -> str:
@@ -144,7 +146,11 @@ class IntentEngine(BaseEngine):
         intent = self._require_pending(intent_id)
 
         req: OrderRequest
-        if intent.stop_price is not None or intent.trail_amount is not None or intent.trail_percent is not None:
+        if (
+            intent.stop_price is not None
+            or intent.trail_amount is not None
+            or intent.trail_percent is not None
+        ):
             req = StopOrderRequest(
                 symbol=intent.symbol,
                 exchange=intent.exchange,

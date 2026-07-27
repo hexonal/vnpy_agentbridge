@@ -29,7 +29,6 @@ from __future__ import annotations
 import json
 
 from fastmcp import FastMCP
-
 from vnpy.trader.constant import Direction, Exchange, Offset, OrderType
 from vnpy.trader.engine import MainEngine
 
@@ -159,7 +158,10 @@ def build_mcp_bridge(main_engine: MainEngine, intent_engine: IntentEngine) -> Fa
             confidence=confidence,
             stop_price=stop_price,
         )
-        return json.dumps({"intent_id": intent.intent_id, "status": intent.status.value}, ensure_ascii=False)
+        return json.dumps(
+            {"intent_id": intent.intent_id, "status": intent.status.value},
+            ensure_ascii=False,
+        )
 
     @mcp.tool
     def order_query_intent_status(intent_id: str) -> str:
